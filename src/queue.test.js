@@ -32,6 +32,8 @@ async function runQueue () {
   queue.add(generator(10))
   await sleep(200)
   queue.add(generator(11))
+  await sleep(700)
+  queue.add(generator(12), generator(13), generator(14))
 
   await sleep(300)
   if (Math.floor(Math.random() * 2)) queue.stop()
