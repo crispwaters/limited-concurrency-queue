@@ -1,6 +1,6 @@
 {
   "name": "limited-concurrency-queue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Queue that allows for limiting concurrent execution to a configured maximum number",
   "main": "index.js",
   "scripts": {
