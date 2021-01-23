@@ -12,6 +12,21 @@ async function concurrencyControl (Queue) {
   }
 }
 
+async function run (Queue) {
+  while (Queue._executing && Queue.items.length) {
+    await concurrencyControl(Queue)
+    if (Queue._executing === false) Queue.concurrencyCount--
+    else {
+      const next = Queue.items.shift()
+      if (next === undefined) Queue.concurrencyCount--
+      else Promise.resolve(next.func(...next.params)).then(() => Queue.concurrencyCount--)
+    }
+  }
+  while (Queue.concurrencyCount > 0) {
+    await sleep(100)
+  }
+}
+
 class Queue {
   constructor ({ maxConcurrency, items = [] } = {}) {
     this.items = []
@@ -34,18 +49,7 @@ class Queue {
     if (this._executing) return
     this._executing = true
     this.concurrencyCount = 0
-    while (this._executing && this.items.length) {
-      await concurrencyControl(this)
-      if (this._executing === false) this.concurrencyCount--
-      else {
-        const next = this.items.shift()
-        if (next === undefined) this.concurrencyCount--
-        else Promise.resolve(next.func(...next.params)).then(() => this.concurrencyCount--)
-      }
-    }
-    while (this.concurrencyCount > 0) {
-      await sleep(100)
-    }
+    await run(this)
     this._executing = false
   }
 
