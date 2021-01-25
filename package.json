@@ -4,12 +4,16 @@
   "description": "Queue that allows for limiting concurrent execution to a configured maximum number",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Chris Waters",
   "repository": "https://github.com/crispwaters/limited-concurrency-queue",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^26.6.3",
     "standard": "^16.0.3"
+  },
+  "standard": {
+    "globals": [ "test", "expect" ]
   }
 }
