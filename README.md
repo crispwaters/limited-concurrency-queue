@@ -35,3 +35,24 @@ Items added to the queue are objects with the following properties
 ```
 
 The `func` property is a generator function that performs the asynchronous request. The `params` property is an array that contains the parameters passed into the generator function
+
+## Threshold
+
+Queues can have a defined threshold for when no additional items will begin processing. Any items that are currently processing will finish processing. Thresholds an be defined by either a number value representing the time in milliseconds or an object that defines the numeric values of milliseconds, seconds, minutes, hours, and/or days.
+
+```javascript
+const Queue = require('limited-concurrency-queue')
+const queue1 = new Queue({ threshold: 720000 })
+const queue2 = new Queue({ threshold: { minutes: 12 } })
+```
+
+The default threshold value can also be altered through a static variable on the Queue class
+
+```javascript
+const Queue = require('limited-concurrency-queue')
+const queue1 = new Queue()
+Queue.defaults.threshold = { minutes: 12 }
+const queue2 = new Queue()
+console.log(queue1.threshold) //=> Infinity
+console.log(queue2.threshold) //=> { minutes: 12 }
+```
