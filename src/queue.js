@@ -13,8 +13,9 @@ class Queue {
     this.items = []
     this._executing = false
     if (items.length) this.add(...items)
-    this.maxConcurrency = maxConcurrency ?? Queue.defaults.maxConcurrency
-    this.threshold = parseThreshold(threshold ?? Queue.defaults.threshold)
+    const coalesce = (value, def) => value != null ? value : def
+    this.maxConcurrency = coalesce(maxConcurrency, Queue.defaults.maxConcurrency)
+    this.threshold = parseThreshold(coalesce(threshold, Queue.defaults.threshold))
   }
 
   add (...items) {
