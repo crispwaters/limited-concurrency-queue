@@ -1,9 +1,15 @@
+const parseThreshold = require('./parseThreshold')
+
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+function thresholdExceeded (Queue) {
+  return (Date.now() - Queue._start) > Queue.threshold
+}
+
 async function concurrencyControl (Queue) {
-  while (true) {
+  while (!thresholdExceeded(Queue)) {
     if (Queue.concurrencyCount < Queue.maxConcurrency) return
     await sleep(100)
   }
@@ -17,9 +23,11 @@ function runNext (Queue) {
 }
 
 async function run (Queue) {
+  Queue._start = Date.now()
   while (Queue._executing && Queue.items.length) {
     await concurrencyControl(Queue)
-    if (Queue._executing === false) return
+    if (Queue._executing === false) break
+    if (thresholdExceeded(Queue)) break
     runNext(Queue)
   }
   while (Queue.concurrencyCount > 0) {
@@ -28,11 +36,19 @@ async function run (Queue) {
 }
 
 class Queue {
-  constructor ({ maxConcurrency, items = [] } = {}) {
+  static resetDefaults () {
+    Queue.defaults = {
+      maxConcurrency: 10,
+      threshold: Infinity
+    }
+  }
+
+  constructor ({ maxConcurrency, items = [], threshold } = {}) {
     this.items = []
     this._executing = false
     if (items.length) this.add(...items)
-    if (maxConcurrency !== undefined) this.maxConcurrency = maxConcurrency
+    this.maxConcurrency = maxConcurrency ?? Queue.defaults.maxConcurrency
+    this.threshold = parseThreshold(threshold ?? Queue.defaults.threshold)
   }
 
   add (...items) {
@@ -57,5 +73,7 @@ class Queue {
     this._executing = false
   }
 }
+
+Queue.resetDefaults()
 
 module.exports = Queue
