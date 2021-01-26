@@ -26,8 +26,7 @@ async function run (Queue) {
   Queue._start = Date.now()
   while (Queue._executing && Queue.items.length) {
     await concurrencyControl(Queue)
-    if (Queue._executing === false) break
-    if (thresholdExceeded(Queue)) break
+    if (Queue._executing === false || thresholdExceeded(Queue)) break
     runNext(Queue)
   }
   while (Queue.concurrencyCount > 0) {
