@@ -22,11 +22,15 @@ function runNext (Queue) {
   Promise.resolve(next.func(...next.params)).then(() => Queue.concurrencyCount--)
 }
 
+function stopEarly (Queue) {
+  return Queue._executing === false || thresholdExceeded(Queue)
+}
+
 async function run (Queue) {
   Queue._start = Date.now()
   while (Queue._executing && Queue.items.length) {
     await concurrencyControl(Queue)
-    if (Queue._executing === false || thresholdExceeded(Queue)) break
+    if (stopEarly(Queue)) break
     runNext(Queue)
   }
   while (Queue.concurrencyCount > 0) {
