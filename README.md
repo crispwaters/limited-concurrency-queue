@@ -1,6 +1,6 @@
 # limited-concurrency-queue
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/595ec60efac64affa139/maintainability)](https://codeclimate.com/github/crispwaters/limited-concurrency-queue/maintainability) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Maintainability](https://api.codeclimate.com/v1/badges/595ec60efac64affa139/maintainability)](https://codeclimate.com/github/crispwaters/limited-concurrency-queue/maintainability) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Build Status](https://travis-ci.com/crispwaters/limited-concurrency-queue.svg?branch=main)](https://travis-ci.com/crispwaters/limited-concurrency-queue)
 
 This is a package to handle processing a maximum number of asynchronous requests concurrently. Items in the queue are processed in the order they are added. When an item finishes processing, the next item in the queue will begin processing.
 
