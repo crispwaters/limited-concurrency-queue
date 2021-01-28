@@ -111,3 +111,52 @@ test('Queue will not start new requeusts when threshold is exceeded', async () =
   await queue.start()
   expect(order).toMatchObject([1, 2, 3, 4])
 })
+
+test('Queue clear removes remaining items from queue', async () => {
+  function sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  async function simulateRequest (name) {
+    order.push(name)
+    const length = 50 - name
+    await sleep(length)
+  }
+
+  function generator (item) {
+    return { func: simulateRequest, params: [item] }
+  }
+
+  const order = []
+  const requeusts = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const queue = new Queue({ maxConcurrency: 4, items: requeusts.map(generator) })
+
+  Promise.resolve(sleep(50)).then(() => queue.clear())
+  await queue.start()
+  expect(queue.items).toMatchObject([])
+  expect(order.length).toBeLessThan(requeusts.length)
+})
+
+test('Queue will not start if already running', async () => {
+  function sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  async function simulateRequest (name) {
+    order.push(name)
+    const length = 50 - name
+    await sleep(length)
+  }
+
+  function generator (item) {
+    return { func: simulateRequest, params: [item] }
+  }
+
+  const order = []
+  const requeusts = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const queue = new Queue({ maxConcurrency: 4, items: requeusts.map(generator) })
+
+  Promise.resolve(sleep(50)).then(() => queue.start())
+  await queue.start()
+  expect(order).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9])
+})
