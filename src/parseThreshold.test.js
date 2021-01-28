@@ -29,3 +29,8 @@ test('parseThreshold ignores invalid properties', () => {
     foo: 'bar'
   })).toBe(10000)
 })
+
+test('parseThreshold returns undefined when invalid parameter is provided', () => {
+  expect(parseThreshold('123')).toBeUndefined()
+  expect(parseThreshold(null)).toBeUndefined()
+})
