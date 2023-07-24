@@ -7,7 +7,7 @@ This is a package to handle processing a maximum number of asynchronous requests
 ## Queue
 
 ```javascript
-const Queue = require('limited-concurrency-queue')
+import { Queue } from 'limited-concurrency-queue'
 const myQueue = new Queue({ maxConcurrency: 5 })
 
 const request = async (item) => ({
@@ -41,7 +41,7 @@ The `func` property is a generator function that performs the asynchronous reque
 Queues can have a defined threshold for when no additional items will begin processing. Any items that are currently processing will finish processing. Thresholds an be defined by either a number value representing the time in milliseconds or an object that defines the numeric values of milliseconds, seconds, minutes, hours, and/or days.
 
 ```javascript
-const Queue = require('limited-concurrency-queue')
+import { Queue } from 'limited-concurrency-queue'
 const queue1 = new Queue({ threshold: 720000 })
 const queue2 = new Queue({ threshold: { minutes: 12 } })
 ```
@@ -49,7 +49,7 @@ const queue2 = new Queue({ threshold: { minutes: 12 } })
 The default threshold value can also be altered through a static variable on the Queue class
 
 ```javascript
-const Queue = require('limited-concurrency-queue')
+import { Queue } from 'limited-concurrency-queue'
 const queue1 = new Queue()
 Queue.defaults.threshold = { minutes: 12 }
 const queue2 = new Queue()
