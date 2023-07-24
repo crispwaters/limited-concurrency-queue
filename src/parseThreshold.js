@@ -1,4 +1,4 @@
-module.exports = (threshold) => {
+export function parseThreshold (threshold) {
   if (typeof threshold === 'number') return threshold
   if (typeof threshold === 'object' && threshold !== null) {
     const msMap = {}

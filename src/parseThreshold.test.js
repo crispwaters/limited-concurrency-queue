@@ -1,36 +1,37 @@
-const parseThreshold = require('./parseThreshold')
+import test from 'ava'
+import { parseThreshold } from './parseThreshold.js'
 
-test('parseThreshold returns Infinity when Infinity is provided', () => {
-  expect(parseThreshold(Infinity)).toBe(Infinity)
+test('parseThreshold returns Infinity when Infinity is provided', (t) => {
+  t.is(parseThreshold(Infinity), Infinity)
 })
 
-test('parseThreshold returns number value when number is provided', () => {
-  expect(parseThreshold(123)).toBe(123)
+test('parseThreshold returns number value when number is provided', (t) => {
+  t.is(parseThreshold(123), 123)
 })
 
-test('parseThreshold calculates number value when threshold object is provided', () => {
-  expect(parseThreshold({
+test('parseThreshold calculates number value when threshold object is provided', (t) => {
+  t.is(parseThreshold({
     milliseconds: 123,
     seconds: 5
-  })).toBe(5123)
-  expect(parseThreshold({
+  }), 5123)
+  t.is(parseThreshold({
     minutes: 12
-  })).toBe(720000)
-  expect(parseThreshold({})).toBe(0)
-  expect(parseThreshold({
+  }), 720000)
+  t.is(parseThreshold({}), 0)
+  t.is(parseThreshold({
     minutes: 12,
     seconds: -1
-  })).toBe(719000)
+  }), 719000)
 })
 
-test('parseThreshold ignores invalid properties', () => {
-  expect(parseThreshold({
+test('parseThreshold ignores invalid properties', (t) => {
+  t.is(parseThreshold({
     seconds: 10,
     foo: 'bar'
-  })).toBe(10000)
+  }), 10000)
 })
 
-test('parseThreshold returns undefined when invalid parameter is provided', () => {
-  expect(parseThreshold('123')).toBeUndefined()
-  expect(parseThreshold(null)).toBeUndefined()
+test('parseThreshold returns undefined when invalid parameter is provided', (t) => {
+  t.is(parseThreshold('123'), undefined)
+  t.is(parseThreshold(null), undefined)
 })

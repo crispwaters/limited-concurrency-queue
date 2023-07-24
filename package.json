@@ -2,21 +2,16 @@
   "name": "limited-concurrency-queue",
   "version": "1.1.1",
   "description": "Queue that allows for limiting concurrent execution to a configured maximum number",
-  "main": "index.js",
+  "main": "src/queue.js",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "ava"
   },
   "author": "Chris Waters",
   "repository": "https://github.com/crispwaters/limited-concurrency-queue",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^26.6.3",
+    "ava": "^5.3.1",
     "standard": "^16.0.3"
-  },
-  "standard": {
-    "globals": [
-      "test",
-      "expect"
-    ]
   }
 }

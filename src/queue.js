@@ -1,7 +1,7 @@
-const parseThreshold = require('./parseThreshold')
-const { run } = require('./queue.internal')
+import { parseThreshold } from './parseThreshold.js'
+import { run } from './queue.internal.js'
 
-class Queue {
+export class Queue {
   static resetDefaults () {
     Queue.defaults = {
       maxConcurrency: 10,
@@ -40,7 +40,4 @@ class Queue {
     this._executing = false
   }
 }
-
 Queue.resetDefaults()
-
-module.exports = Queue
