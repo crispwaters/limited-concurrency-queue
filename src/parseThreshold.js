@@ -1,4 +1,10 @@
-module.exports = (threshold) => {
+import './parseThreshold.typedef.js'
+/**
+ * Parses a threshold value in milliseconds from an object or number.
+ * @param {Threshold|number} threshold - The threshold value to parse.
+ * @returns {number} The parsed threshold value in milliseconds.
+ */
+export function parseThreshold (threshold) {
   if (typeof threshold === 'number') return threshold
   if (typeof threshold === 'object' && threshold !== null) {
     const msMap = {}
